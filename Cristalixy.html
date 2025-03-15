@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cristalixy | The Ultimate Roblox Bootstrapper</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #8e7cef;
+            --dark: #0f0f1a;
+            --darker: #080810;
+            --light: #f1f1f8;
+            --accent: #00cec9;
+            --accent-glow: #00ffe5;
+            --card-bg: #1a1a2e;
+            --nav-bg: rgba(15, 15, 26, 0.95);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 0.8rem 2rem;
+        }
+        
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.3s;
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-download {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: var(--light);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+        }
+        
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.8), rgba(142, 124, 239, 0.8));
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--dark) 160%);
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 1rem;
+            animation: glow 3s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: var(--light);
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 2;
+            margin-top: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-7px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
+        }
+        
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            border-radius: 50px;
+            z-index: -1;
+            transition: all 0.4s;
+        }
+        
+        .download-btn:hover::after {
+            opacity: 0;
+            transform: scale(1.3);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 7rem 1rem;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 2.5rem;
+            width: 320px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 1.5s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+        
+        .feature-card:hover::before {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+        
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.4s; }
+        .feature-card:nth-child(3) { animation-delay: 0.6s; }
+        
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.8rem;
+            color: var(--accent);
+            animation: pulse 3s infinite;
+        }
+        
+        .feature-title {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-desc {
+            color: rgba(241, 241, 248, 0.7);
+            line-height: 1.7;
+        }
+        
+        .comparison {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            padding: 7rem 1rem;
+            text-align: center;
+            margin-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .comparison::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(108, 92, 231, 0.03),
+                rgba(108, 92, 231, 0.03) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+        
+        .comparison h2 {
+            font-size: 2.8rem;
+            margin-bottom: 3.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .comparison h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .comparison-table {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 25px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(108, 92, 231, 0.2);
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(108, 92, 231, 0.3);
+        }
+        
+        .feature-name-header {
+            flex: 1;
+            text-align: left;
+            font-size: 1.2rem;
+            color: var(--light);
+            opacity: 0.8;
+        }
+        
+        .cristalixy-header, .others-header {
+            width: 150px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .cristalixy-header {
+            color: var(--accent);
+        }
+        
+        .others-header {
+            color: var(--light);
+            opacity: 0.8;
+        }
+        
+        .comparison-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(108, 92, 231, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .comparison-item:hover {
+            background: rgba(108, 92, 231, 0.05);
+            transform: translateX(5px);
+        }
+        
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-name {
+            flex: 1;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .feature-comparison {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .cristalixy, .others {
+            width: 150px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .cristalixy {
+            color: var(--accent-glow);
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(0, 206, 201, 0.3);
+        }
+        
+        .comparison-item:hover .cristalixy {
+            transform: scale(1.1);
+        }
+        
+        /* Features section */
+        .detailed-features {
+            padding: 7rem 1rem;
+            position: relative;
+        }
+        
+        .detailed-features h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .detailed-features h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-item {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+        
+        .feature-item-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-item-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .feature-item-desc {
+            color: rgba(241, 241, 248, 0.7);
+            line-height: 1.8;
+        }
+        
+        /* Installation guide */
+        .installation {
+            padding: 7rem 1rem;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 26, 0.8));
+            position: relative;
+        }
+        
+        .installation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
+        }
+        
+        .installation h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .installation h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .steps-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+        
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        
+        .step-content {
+            width: 45%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .step-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(108, 92, 231, 0.3);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            z-index: 2;
+            transform: translateY(-50%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .step:nth-child(odd) .step-number {
+            left: -20px;
+        }
+        
+        .step:nth-child(even) .step-number {
+            right: -20px;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .step-desc {
+            color: rgba(241, 241, 248, 0.7);
+            line-height: 1.7;
+        }
+        
+        /* FAQ section */
+        .faq {
+            padding: 7rem 1rem;
+            position: relative;
+        }
+        
+        .faq h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .faq h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .faq-question:hover {
+            background: rgba(108, 92, 231, 0.05);
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: rgba(241, 241, 248, 0.7);
+            line-height: 1.7;
+        }
+        
+        .faq-item.active .faq-question {
+            border-bottom: 1px solid rgba(108, 92, 231, 0.1);
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 1.5rem;
+            max-height: 300px;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        /* Updates/Changelog */
+        .updates {
+            padding: 7rem 1rem;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 26, 0.8));
+            position: relative;
+        }
+        
+        .updates::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
+        }
+        
+        .updates h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .updates h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .updates-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .update-item {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .update-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(108, 92, 231, 0.3);
+        }
+        
+        .update-version {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .update-date {
+            color: rgba(241, 241, 248, 0.6);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .update-changes {
+            color: rgba(241, 241, 248, 0.8);
+        }
+        
+        .update-change {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+        
+        .update-change:last-child {
+            margin-bottom: 0;
+        }
+        
+        .update-change i {
+            color: var(--accent);
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            padding-top: 0.2rem;
+        }
+        
+        /* Community section */
+        .community {
+            padding: 7rem 1rem;
+            position: relative;
+            text-align: center;
+        }
+        
+        .community h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .community h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .community-desc {
+            max-width: 700px;
+            margin: 3rem auto;
+            color: rgba(241, 241, 248, 0.8);
+            line-height: 1.8;
+        }
+        
+        .join-discord {
+            background: linear-gradient(135deg, #7289da, #5865f2);
+            color: var(--light);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+        
+        .join-discord:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(88, 101, 242, 0.4);
+        }
+        
+        .testimonials {
+            max-width: 1200px;
+            margin: 5rem auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            text-align: left;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .testimonial:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+        }
+        
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 4rem;
+            color: rgba(108, 92, 231, 0.1);
+            font-family: serif;
+        }
+        
+        .testimonial-content {
+            color: rgba(241, 241, 248, 0.8);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--light);
+            font-weight: 600;
+        }
+        
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .cta {
+            padding: 7rem 1rem;
+            text-align: center;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 60%);
+        }
+        
+        .cta h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.8rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        .cta p {
+            max-width: 650px;
+            margin: 0 auto 3rem;
+            color: rgba(241, 241, 248, 0.8);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            background: var(--darker);
+            color: var(--light);
+            text-align: center;
+            padding: 3rem;
+            position: relative;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(108, 92, 231, 0.1);
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+            opacity: 1;
+            transform: translateY(-5px);
+            background: rgba(108, 92, 231, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes glow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+            }
+            50% { 
+                text-shadow: 0 0 25px rgba(108, 92, 231, 0.9), 0 0 40px rgba(0, 206, 201, 0.5);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(108, 92, 231, 0.5);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
+        }
+        
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .step {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step:nth-child(odd) {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step-content {
+                width: 80%;
+                margin-bottom: 2rem;
+            }
+            
+            .timeline {
+                display: none;
+            }
+            
+            .step-number {
+                position: static;
+                margin-bottom: 1rem;
+                transform: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                right: 0;
+                top: 70px;
+                background: var(--nav-bg);
+                backdrop-filter: blur(10px);
+                height: 100vh;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3rem;
+                clip-path: circle(0px at 90% -10%);
+                transition: all 0.5s ease-out;
+                pointer-events: none;
+            }
+            
+            .nav-links.active {
+                clip-path: circle(1500px at 90% -10%);
+                pointer-events: all;
+            }
+            
+            .burger {
+                display: block;
+                z-index: 5;
+            }
+            
+            .nav-active .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .nav-active .line2 {
+                opacity: 0;
+            }
+            
+            .nav-active .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .comparison-item, .table-header {
+                flex-direction: column;
+            }
+            
+            .feature-comparison {
+                margin-top: 1rem;
+                justify-content: space-around;
+                width: 100%;
+            }
+            
+            .feature-name-header, .cristalixy-header, .others-header {
+                text-align: center;
+                margin-bottom: 0.5rem;
+                width: 100%;
+            }
+            
+            .cristalixy, .others {
+                width: auto;
+                flex: 1;
+            }
+            
+            .step-content {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="nav-logo">Cristalixy</a>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#installation" class="nav-link">Installation</a>
+            <a href="#faq" class="nav-link">FAQ</a>
+            <a href="#updates" class="nav-link">Updates</a>
+            <a href="#community" class="nav-link">Community</a>
+            <a href="https://discord.gg/TkKrjA7ecY" class="nav-download">Download</a>
+        </div>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="particles">
+            <div class="particle" style="left:10%; animation-duration:20s; animation-delay:0s;"></div>
+            <div class="particle" style="left:20%; animation-duration:18s; animation-delay:1s;"></div>
+            <div class="particle" style="left:35%; animation-duration:15s; animation-delay:2s;"></div>
+            <div class="particle" style="left:50%; animation-duration:22s; animation-delay:0.5s;"></div>
+            <div class="particle" style="left:65%; animation-duration:17s; animation-delay:1.5s;"></div>
+            <div class="particle" style="left:80%; animation-duration:19s; animation-delay:2.5s;"></div>
+            <div class="particle" style="left:90%; animation-duration:21s; animation-delay:1s;"></div>
+        </div>
+        <div class="logo">Cristalixy</div>
+        <p class="tagline">The Ultimate Roblox Experience Enhancer</p>
+        <a href="https://discord.gg/TkKrjA7ecY" class="download-btn">Download Now</a>
+    </header>
+    
+    <section class="hero">
+        <div class="particles">
+            <div class="particle" style="left:5%; animation-duration:23s; animation-delay:0s;"></div>
+            <div class="particle" style="left:25%; animation-duration:16s; animation-delay:1.2s;"></div>
+            <div class="particle" style="left:45%; animation-duration:19s; animation-delay:0.7s;"></div>
+            <div class="particle" style="left:70%; animation-duration:21s; animation-delay:2s;"></div>
+            <div class="particle" style="left:85%; animation-duration:17s; animation-delay:1.5s;"></div>
+        </div>
+        <h2>Elevate Your Roblox Experience</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">Lightning Fast</h3>
+                <p class="feature-desc">Injects at blazing fast speeds</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3 class="feature-title">99% UNC</h3>
+                <p class="feature-desc">Run all the scripts you want</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <h3 class="feature-title">Undetected</h3>
+                <p class="feature-desc">Undetected so u will not get banned when theres a banwave incoming</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="comparison">
+        <h2>Why Choose Cristalixy?</h2>
+        <div class="comparison-table">
+            <div class="table-header">
+                <div class="feature-name-header">Feature</div>
+                <div class="cristalixy-header">Cristalixy</div>
+                <div class="others-header">Other Executors</div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="feature-name">Loading Speed</div>
+                <div class="feature-comparison">
+                    <div class="cristalixy">Ultra Fast</div>
+                    <div class="others">Standard</div>
+                </div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="feature-name">Resource Usage</div>
+                <div class="feature-comparison">
+                    <div class="cristalixy">Minimal</div>
+                    <div class="others">High</div>
+                </div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="feature-name">UNC Compatibility</div>
+                <div class="feature-comparison">
+                    <div class="cristalixy">99%</div>
+                    <div class="others">70%</div>
+                </div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="feature-name">Detection</div>
+                <div class="feature-comparison">
+                    <div class="cristalixy">Undetected</div>
+                    <div class="others">Detected</div>
+                </div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="feature-name">Update Frequency</div>
+                <div class="feature-comparison">
+                    <div class="cristalixy">Continuous</div>
+                    <div class="others">Occasional</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="detailed-features" id="features">
+        <h2>Advanced Features</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <div class="feature-item-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3 class="feature-item-title">Optimized Performance</h3>
+                <p class="feature-item-desc">Cristalixy is designed from the ground up to maximize performance. Our Executor minimizes resource usage while providing lightning-fast inject times for all your favorite Roblox experiences.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-item-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-item-title">Enhanced Security</h3>
+                <p class="feature-item-desc">Security is our priority. Cristalixy implements advanced protection features to keep your exploiting experience safe</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-item-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-item-title">Undetected</h3>
+                <p class="feature-item-desc">Our Executor is fully undetected by roblox, making it the perfect choice for those who want to stay under the radar</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-item-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3 class="feature-item-title">Customizable Interface</h3>
+                <p class="feature-item-desc">Make Cristalixy your own with extensive customization options. Change themes, layouts, and settings to match your personal preferences and style.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-item-icon">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <h3 class="feature-item-title">Multi-Instance Support</h3>
+                <p class="feature-item-desc">Inject on all the instances you want, you choose what instances to inject and wich not</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-item-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3 class="feature-item-title">Advanced Settings</h3>
+                <p class="feature-item-desc">Fine-tune your experience with detailed configuration options. Control everything from performance settings to interface behavior for the perfect setup.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="installation" id="installation">
+        <h2>Installation Guide</h2>
+        <div class="steps-container">
+            <div class="timeline"></div>
+            
+            <div class="step">
+                <div class="step-content">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Join Our Discord</h3>
+                    <p class="step-desc">Start by joining our Discord community where you'll get access to the latest version of Cristalixy and connect with other users.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-content">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Download Cristalixy</h3>
+                    <p class="step-desc">Download the latest version of Cristalixy from our verified download channel. Always ensure you're getting Cristalixy from our official sources.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-content">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Run The Bootstrapper</h3>
+                    <p class="step-desc">Launch the Bootstrapper and follow our simple setup. The process is quick and will guide you through optimal configuration.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-content">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Configure Settings</h3>
+                    <p class="step-desc">Customize Cristalixy to match your preferences. Adjust performance settings, visual options to your liking.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-content">
+                    <div class="step-number">5</div>
+                    <h3 class="step-title">Launch and Play</h3>
+                    <p class="step-desc">You're all set! Launch Cristalixy and enjoy an enhanced Exploiting experience with faster loading times and advanced features.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="faq" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is Cristalixy Detected?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    No, Cristalixy is not detected, we have implemented advanced security features to keep you safe from detection
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What does "99% UNC" mean?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    UNC is how many scripts are able to run on the executor the higer the better, with out 99% UNC you can run almost all the scripts you want.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Will Cristalixy affect my Roblox performance?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Cristalixy is designed to improve performance, not hinder it. Our Executor optimizes resource usage and reduces loading times, resulting in a smoother experience, especially on lower-end systems.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How often is Cristalixy updated?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    We maintain a continuous update schedule. Major updates are typically released monthly, with minor improvements and bug fixes deployed weekly. We also respond quickly to Roblox updates to ensure ongoing compatibility.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is Cristalixy free to use?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, Cristalixy is completely free to use. We believe in providing the best possible experience to all Exploiters, regardless of budget.
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="updates" id="updates">
+        <h2>Latest Updates</h2>
+        <div class="updates-container">
+            <div class="update-item">
+                <div class="update-version">Version 2.5.0</div>
+                <div class="update-date">March 10, 2025</div>
+                <div class="update-changes">
+                    <div class="update-change">
+                        <i class="fas fa-star"></i>
+                        <div>Added new advanced joiner system with improved friend detection</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-bolt"></i>
+                        <div>Optimized loading times for larger Roblox experiences by 15%</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-paint-brush"></i>
+                        <div>Introduced 3 new UI themes: Nebula, Arctic, and Sunset</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-bug"></i>
+                        <div>Fixed compatibility issues with latest Roblox update</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="update-item">
+                <div class="update-version">Version 2.4.2</div>
+                <div class="update-date">February 18, 2025</div>
+                <div class="update-changes">
+                    <div class="update-change">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>Improved our UNC and rewrote most of the Executor for the new Roblox Update</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-bug"></i>
+                        <div>Fixed rare crash when joining high-people servers</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <div>Improved memory management for extended play sessions</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="update-item">
+                <div class="update-version">Version 2.4.0</div>
+                <div class="update-date">January 25, 2025</div>
+                <div class="update-changes">
+                    <div class="update-change">
+                        <i class="fas fa-star"></i>
+                        <div>Introduced new multi-instance Injection</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-desktop"></i>
+                        <div>Added support for custom resolution presets</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-users"></i>
+                        <div>Enhanced Discord integration with rich presence support</div>
+                    </div>
+                    <div class="update-change">
+                        <i class="fas fa-cogs"></i>
+                        <div>Expanded advanced settings with new performance options</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="community" id="community">
+        <h2>Join Our Community</h2>
+        <p class="community-desc">
+            Cristalixy is more than just a Executor - It's a free project built by the community, for the community. Join our Discord server to connect with other Exploiters, and stay up-to-date on the latest updates and features.
+        </p>
+        <a href="https://discord.gg/TkKrjA7ecY" class="join-discord">
+            <i class="fab fa-discord"></i> Join Our Discord
+        </a>
+        
+        <div class="testimonials">
+            <div class="testimonial">
+                <p class="testimonial-content">Cristalixy completely transformed my Exploting experience. With high UNC i could run all the scripts i wanted </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">R</div>
+                    <div class="testimonial-name">Rin_W</div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <p class="testimonial-content">I was skeptical at first, but after trying Cristalixy, I can't go back to the standard Roblox. Scripting its so easy, especially for a person like me</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">D</div>
+                    <div class="testimonial-name">Dawall</div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <p class="testimonial-content">The community support is amazing! When I had questions about Injection, multiple users helped me get the perfect setup for my system. 10/10 recommend!</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">Z</div>
+                    <div class="testimonial-name">Zion</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta" id="download">
+        <div class="particles">
+            <div class="particle" style="left:15%; animation-duration:20s; animation-delay:0.3s;"></div>
+            <div class="particle" style="left:30%; animation-duration:17s; animation-delay:1.7s;"></div>
+            <div class="particle" style="left:55%; animation-duration:22s; animation-delay:0.9s;"></div>
+            <div class="particle" style="left:75%; animation-duration:19s; animation-delay:2.3s;"></div>
+        </div>
+        <h2>Ready to Transform Your Roblox Experience?</h2>
+        <p>Join thousands of exploiters who have already enhanced their gaming with Cristalixy. Experience faster injecting times, better Performance.</p>
+        <a href="https://discord.gg/TkKrjA7ecY" class="download-btn">Download Cristalixy</a>
+    </section>
+    
+    <footer>
+        <div class="social-links">
+            <a href="https://discord.gg/TkKrjA7ecY"><i class="fab fa-discord"></i></a>
+        </div>
+        <p>&copy; 2025 Cristalixy - The Ultimate Roblox Executor</p>
+    </footer>
+    
+    <script>
+        // Add more particles dynamically
+        document.addEventListener('DOMContentLoaded', function() {
+            const particleContainers = document.querySelectorAll('.particles');
+            
+            particleContainers.forEach(container => {
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = 15 + Math.random() * 10 + 's';
+                    particle.style.animationDelay = Math.random() * 5 + 's';
+                    particle.style.opacity = Math.random() * 0.5;
+                    particle.style.width = Math.random() * 3 + 2 + 'px';
+                    particle.style.height = particle.style.width;
+                    container.appendChild(particle);
+                }
+            });
+            
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Mobile menu toggle
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            burger.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                burger.classList.toggle('nav-active');
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    burger.classList.remove('nav-active');
+                });
+            });
+            
+            // FAQ toggle
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
